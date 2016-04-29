@@ -75,37 +75,45 @@ Beweis: swap (swap (x,y)) = swap (y,x) = (x,y)
 
    IB: ZZ: rev (rev []) = []
 
-   rev (rev []) = rev [] = []
+   	#+BEGIN_SRC haskell
+	rev (rev []) = rev [] = []
+    #+END_SRC
 
    IS: Sei xs :: [a] so dass rev (rev xs) = xs
 
        Sei x::a.  ZZ: rev (rev (x:xs)) = x:xs
 
+	   #+BEGIN_SRC haskell
 	   rev (rev (x:xs)) = rev (rev xs ++ [x])
 	                    = x : rev (rev xs)      (*)
 						= x : xs                (IH)
+       #+END_SRC
 
 *** Hilfseigenschaft
 	für alle x::a, xs :: [a] gilt rev (xs ++ [x]) = x : rev xs   (*)
 
 	IB: Sei x::a.
-	
+
+		#+BEGIN_SRC haskell
 	    rev ([] ++ [x]) = rev [x]
                         = rev [] ++ [x]
 						= [] ++ [x]
 						= [x]
 						= x : []
 						= x : rev []
+		#+END_SRC
 
 	IS: Sei xs :: [a] so dass fuer alle x::a gilt: rev (xs ++ [x]) = x : rev xs
 
 	    Sei y::a.  ZZ: fuer alle x::a gilt: rev ((y:xs) ++ [x]) = x : rev (y:xs)
 
+		#+BEGIN_SRC haskell
 		rev ((y:xs) ++ [x]) = rev (y : (xs ++ [x]))
                             = rev (xs ++ [x]) ++ [y]
 							= (x : rev xs) ++ [y]
 							= x : (rev xs ++ [y])
 							= x : rev (y : xs)
+		#+END_SRC
 	
 * Induktion auf algebraischen Datentypen
 ** Definition
@@ -154,10 +162,12 @@ ZZ: fuer alle f :: a -> a, t :: Tree a gilt: map f (collapse t) = collapse (mapT
 
 IB: Sei f :: a->a.  ZZ: map f (collapse Nil) = collapse (mapTree f Nil)
 
+#+BEGIN_SRC haskell
 map f (collapse Nil) = map f []
                      = []
 					 = collapse Nil
 					 = collapse (mapTree f Nil)
+#+END_SRC
 
 IS: Sei l, r :: Tree a so dass
     - map f (collapse l) = collapse (mapTree f l)
@@ -165,6 +175,7 @@ IS: Sei l, r :: Tree a so dass
 
 	Sei x :: a.  ZZ: map f (collapse (Node x l r)) = collapse (mapTree f (Node x l r))
 
+	#+BEGIN_SRC haskell
 	map f (collapse (Node x l r)) = map f (collapse l ++ [x] ++ collapse r)
 	                              = map f (collapse l) ++ map f [x] ++ map f (collapse r)    (**)
 								  = collapse (mapTree f l) ++ map f [x] ++ collapse (mapTree f r)
@@ -173,6 +184,7 @@ IS: Sei l, r :: Tree a so dass
 								  = collapse (mapTree f l) ++ [f x] ++ collapse (mapTree f r)
 								  = collapse (Node (f x) (mapTree f l) (mapTree f r))
 								  = collapse (mapTree f (Node x l r))
+    #+END_SRC
 
 *** Hilfsaussage:
 	Sei xs, ys :: [a], f :: a->a.  Dann gilt: map f (xs ++ ys) = map f xs ++ map f ys   (**)
