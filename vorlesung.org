@@ -28,31 +28,31 @@ Beweis: swap (swap (x,y)) = swap (y,x) = (x,y)
    dann gilt P(n) für *alle* n ∈ ℕ.
 
 *** Verhältnis zu Induktion auf [a]:
-	Wir nehmen einen Dummy-Typ, z.B. data A = A
+    Wir nehmen einen Dummy-Typ, z.B. data A = A
 
-	Dann entspricht die Liste xs = [A, ..., A] der Zahl (length xs)
+    Dann entspricht die Liste xs = [A, ..., A] der Zahl (length xs)
 ** double und sumList
    ZZ: fuer alle xs :: [Int] gilt sumList (double xs) = 2 * sumList xs
 
    IB:
-   	#+BEGIN_SRC haskell
+    #+BEGIN_SRC haskell
        sumList (double []) = sumList []
                            = 0
-						   = 2 * 0
-						   = 2 * sumList []
+                           = 2 * 0
+                           = 2 * sumList []
    #+END_SRC
 
    IS: Sei xs :: [Int] so dass: sumList (double xs) = 2 * sumList xs (IH)
 
        Sei x :: Int.  ZZ: sumList (double (x:xs)) = 2 * sumList (x:xs)
 
-	#+BEGIN_SRC haskell
-	   sumList (double (x:xs)) = sumList ((2*x) : double xs)
-	                           = 2*x + sumList (double xs)
-							   = 2*x + 2 * sumList xs
-							   = 2 * (x + sumList xs)
-							   = 2 * sumList (x:xs)
-		#+END_SRC
+    #+BEGIN_SRC haskell
+       sumList (double (x:xs)) = sumList ((2*x) : double xs)
+                               = 2*x + sumList (double xs)
+                               = 2*x + 2 * sumList xs
+                               = 2 * (x + sumList xs)
+                               = 2 * sumList (x:xs)
+        #+END_SRC
 ** Schwieriges Beispiel
    #+BEGIN_SRC haskell
    iSort :: [Int] -> [Int]
@@ -71,55 +71,55 @@ Beweis: swap (swap (x,y)) = swap (y,x) = (x,y)
    #+END_SRC
 
 *** Zu HB3
-	x = 7 in xs = [1,3,4,8,9,10]:
-	Dann also ys = [1,3,4] und zs = [8,9,10]
-	und ins x xs = ys ++ [x] ++ zs
+    x = 7 in xs = [1,3,4,8,9,10]:
+    Dann also ys = [1,3,4] und zs = [8,9,10]
+    und ins x xs = ys ++ [x] ++ zs
 
 ** rev
    ZZ: für alle xs :: [a] gilt rev (rev xs) = xs
 
    IB: ZZ: rev (rev []) = []
 
-   	#+BEGIN_SRC haskell
-	rev (rev []) = rev [] = []
+    #+BEGIN_SRC haskell
+    rev (rev []) = rev [] = []
     #+END_SRC
 
    IS: Sei xs :: [a] so dass rev (rev xs) = xs
 
        Sei x::a.  ZZ: rev (rev (x:xs)) = x:xs
 
-	   #+BEGIN_SRC haskell
-	   rev (rev (x:xs)) = rev (rev xs ++ [x])
-	                    = x : rev (rev xs)      (*)
-						= x : xs                (IH)
+       #+BEGIN_SRC haskell
+       rev (rev (x:xs)) = rev (rev xs ++ [x])
+                        = x : rev (rev xs)      (*)
+                        = x : xs                (IH)
        #+END_SRC
 
 *** Hilfseigenschaft
-	für alle x::a, xs :: [a] gilt rev (xs ++ [x]) = x : rev xs   (*)
+    für alle x::a, xs :: [a] gilt rev (xs ++ [x]) = x : rev xs   (*)
 
-	IB: Sei x::a.
+    IB: Sei x::a.
 
-		#+BEGIN_SRC haskell
-	    rev ([] ++ [x]) = rev [x]
+        #+BEGIN_SRC haskell
+        rev ([] ++ [x]) = rev [x]
                         = rev [] ++ [x]
-						= [] ++ [x]
-						= [x]
-						= x : []
-						= x : rev []
-		#+END_SRC
+                        = [] ++ [x]
+                        = [x]
+                        = x : []
+                        = x : rev []
+        #+END_SRC
 
-	IS: Sei xs :: [a] so dass fuer alle x::a gilt: rev (xs ++ [x]) = x : rev xs
+    IS: Sei xs :: [a] so dass fuer alle x::a gilt: rev (xs ++ [x]) = x : rev xs
 
-	    Sei y::a.  ZZ: fuer alle x::a gilt: rev ((y:xs) ++ [x]) = x : rev (y:xs)
+        Sei y::a.  ZZ: fuer alle x::a gilt: rev ((y:xs) ++ [x]) = x : rev (y:xs)
 
-		#+BEGIN_SRC haskell
-		rev ((y:xs) ++ [x]) = rev (y : (xs ++ [x]))
+        #+BEGIN_SRC haskell
+        rev ((y:xs) ++ [x]) = rev (y : (xs ++ [x]))
                             = rev (xs ++ [x]) ++ [y]
-							= (x : rev xs) ++ [y]
-							= x : (rev xs ++ [y])
-							= x : rev (y : xs)
-		#+END_SRC
-	
+                            = (x : rev xs) ++ [y]
+                            = x : (rev xs ++ [y])
+                            = x : rev (y : xs)
+        #+END_SRC
+    
 * Induktion auf algebraischen Datentypen
 ** Definition
    Wenn
@@ -128,7 +128,7 @@ Beweis: swap (swap (x,y)) = swap (y,x) = (x,y)
    - (Induktionsschritt:) folgende Implikation für jeden k-stelligen Konstruktor C mit Ergebnistyp T mit
      k ≥ 1 und alle Werte t1, ... , tk (vom passenden Argumenttyp) gilt:
 
-	 wenn P für jedes tᵢ vom Typ T gilt (Induktionsvoraussetzung), dann gilt P für (C t₁ ... tₖ),
+     wenn P für jedes tᵢ vom Typ T gilt (Induktionsvoraussetzung), dann gilt P für (C t₁ ... tₖ),
 
    dann gilt P für jeden Wert von T.
 
@@ -170,26 +170,26 @@ IB: Sei f :: a->a.  ZZ: map f (collapse Nil) = collapse (mapTree f Nil)
 #+BEGIN_SRC haskell
 map f (collapse Nil) = map f []
                      = []
-					 = collapse Nil
-					 = collapse (mapTree f Nil)
+                     = collapse Nil
+                     = collapse (mapTree f Nil)
 #+END_SRC
 
 IS: Sei l, r :: Tree a so dass
     - map f (collapse l) = collapse (mapTree f l)
     - map f (collapse r) = collapse (mapTree f r)
 
-	Sei x :: a.  ZZ: map f (collapse (Node x l r)) = collapse (mapTree f (Node x l r))
+    Sei x :: a.  ZZ: map f (collapse (Node x l r)) = collapse (mapTree f (Node x l r))
 
-	#+BEGIN_SRC haskell
-	map f (collapse (Node x l r)) = map f (collapse l ++ [x] ++ collapse r)
-	                              = map f (collapse l) ++ map f [x] ++ map f (collapse r)    (**)
-								  = collapse (mapTree f l) ++ map f [x] ++ collapse (mapTree f r)
-								  = collapse (mapTree f l) ++ map f (x:[]) ++ collapse (mapTree f r)
-								  = collapse (mapTree f l) ++ (f x : []) ++ collapse (mapTree f r)
-								  = collapse (mapTree f l) ++ [f x] ++ collapse (mapTree f r)
-								  = collapse (Node (f x) (mapTree f l) (mapTree f r))
-								  = collapse (mapTree f (Node x l r))
+    #+BEGIN_SRC haskell
+    map f (collapse (Node x l r)) = map f (collapse l ++ [x] ++ collapse r)
+                                  = map f (collapse l) ++ map f [x] ++ map f (collapse r)    (**)
+                                  = collapse (mapTree f l) ++ map f [x] ++ collapse (mapTree f r)
+                                  = collapse (mapTree f l) ++ map f (x:[]) ++ collapse (mapTree f r)
+                                  = collapse (mapTree f l) ++ (f x : []) ++ collapse (mapTree f r)
+                                  = collapse (mapTree f l) ++ [f x] ++ collapse (mapTree f r)
+                                  = collapse (Node (f x) (mapTree f l) (mapTree f r))
+                                  = collapse (mapTree f (Node x l r))
     #+END_SRC
 
 *** Hilfsaussage:
-	Sei xs, ys :: [a], f :: a->a.  Dann gilt: map f (xs ++ ys) = map f xs ++ map f ys   (**)
+    Sei xs, ys :: [a], f :: a->a.  Dann gilt: map f (xs ++ ys) = map f xs ++ map f ys   (**)
