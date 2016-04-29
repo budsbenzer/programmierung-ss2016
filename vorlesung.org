@@ -16,8 +16,8 @@ Beweis: swap (swap (x,y)) = swap (y,x) = (x,y)
   dann gilt P(xs) für *alle* Listen xs::[a].
 ** Intuition
    P([])
-   ⇒ P(x:[])
-   ⇒ P(y:x:[]) = P([y,x])
+   ⇒ P(x : [])
+   ⇒ P(y : x : []) = P([y,x])
    ⇒ ⋯
 ** Induktion auf ℕ
    Nun natürlich Eigenschaft P : ℕ → {0, 1}
@@ -34,20 +34,25 @@ Beweis: swap (swap (x,y)) = swap (y,x) = (x,y)
 ** double und sumList
    ZZ: fuer alle xs :: [Int] gilt sumList (double xs) = 2 * sumList xs
 
-   IB: sumList (double []) = sumList []
+   IB:
+   	#+BEGIN_SRC haskell
+       sumList (double []) = sumList []
                            = 0
 						   = 2 * 0
 						   = 2 * sumList []
+   #+END_SRC
 
    IS: Sei xs :: [Int] so dass: sumList (double xs) = 2 * sumList xs (IH)
 
        Sei x :: Int.  ZZ: sumList (double (x:xs)) = 2 * sumList (x:xs)
 
+	#+BEGIN_SRC haskell
 	   sumList (double (x:xs)) = sumList ((2*x) : double xs)
 	                           = 2*x + sumList (double xs)
 							   = 2*x + 2 * sumList xs
 							   = 2 * (x + sumList xs)
 							   = 2 * sumList (x:xs)
+		#+END_SRC
 ** Schwieriges Beispiel
    #+BEGIN_SRC haskell
    iSort :: [Int] -> [Int]
