@@ -1,0 +1,113 @@
+* Übung 7 (2016-05-30)
+** Lösung zu Aufgabe 1a
+(λzx. z x (λy. yx)) (λy. zx) (λz. z)
+   ^^^^^^^^^^^^^^^  ^^^^^^^^
+   GV={x,y}         FV={x,z}
+
+⇒_α (λzx₁. z x₁ (λy. yx₁)) (λy. zx) (λz. z)
+       ^^^^^^^^^^^^^^^^^^  ^^^^^^^^
+       GV={x₁,y}           FV={x,z}
+
+⇒_β (λx₁. (λy. zx) x₁ (λy. yx₁)) (λz. z)
+          ^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^
+          GV={y}                 FV=∅
+
+⇒_β (λy. zx) (λz. z) (λy. y (λz. z))
+         ^^  ^^^^^^^
+       GV=∅  FV=∅
+
+⇒_β z x (λy. y (λz. z))
+
+** Lösung zu Aufgabe 1b
+⟨F⟩ = (λfxy. ⟨ite⟩ (⟨iszero⟩ (⟨pred⟩ x))
+                   (⟨mult⟩ ⟨2⟩ y)
+                   (⟨add⟩ y (⟨mult⟩ (⟨succ⟩ x) (f (⟨pred⟩ x) (⟨add⟩ x y)))))
+⟨f⟩ = ⟨Y⟩⟨F⟩
+
+** Lösung zu Aufgabe 2
+| BZ |  DK | HS    | Inp | Out |          |
+|----+-----+-------+-----+-----+----------|
+|  1 |   ε | []    | 2   | ε   | READ 1;  |
+|  2 |     | [1/2] | ε   |     | LOAD 1;  |
+|  3 |   2 | [1/2] |     |     | LIT 1;   |
+|  4 | 1:2 |       |     |     | GT;      |
+|  5 |   1 |       |     |     | JMC 12;  |
+|  6 |   ε |       |     |     | LOAD 1;  |
+|  7 |   2 |       |     |     | LIT 2;   |
+|  8 | 2:2 |       |     |     | DIV;     |
+|  9 |   1 |       |     |     | STORE 1; |
+| 10 |   ε | [1/1] |     |     | WRITE 1; |
+| 11 |     | [1/1] |     | 1   | JMP 2;   |
+|  2 |     |       |     |     | LOAD 1;  |
+|  3 |   1 |       |     |     | LIT 1;   |
+|  4 | 1:1 |       |     |     | GT;      |
+|  5 |   0 |       |     |     | JMC 12;  |
+| 12 |   ε |       |     |     |          |
+
+** Lösung zu Aufgabe 3a
+  trans( #include <stdio.h>
+         int main() {
+           int a, b, max;
+           scanf("%i", &a);
+           scanf("%i", &b);
+           if (a > b) max = a;
+           else max = b;
+           printf("%d", max);
+           return 0;
+         }                     )
+= blocktrans( {
+                int a, b, max;
+                scanf("%i", &a);
+                scanf("%i", &b);
+                if (a > b) max = a;
+                else max = b;
+                printf("%d", max);
+                return 0;
+              }                     )
+= stseqtrans( scanf("%i", &a);
+              scanf("%i", &b);
+              if (a > b) max = a;
+              else max = b;
+              printf("%d", max);
+            , [a/(var,1), b/(var,2), max/(var,3)]   # =: tab₁
+            , 1 )
+= sttrans( scanf("%i", &a);, tab₁, 1.1 )
+  sttrans( scanf("%i", &b);, tab₁, 1.2 )
+  sttrans( if (a > b) max = a;
+           else max = b;, tab₁, 1.3 )
+  sttrans( printf("%d", max);, tab₁, 1.4 )
+= READ 1;
+  READ 2;
+  boolexptrans(a > b)
+  JMC 1.3.1;
+  sttrans(max = a;, tab₁, 1.3.2)
+  JMP 1.3.3;
+  1.3.1: sttrans(max = b;, tab₁, 1.3.4)
+  1.3.3: WRITE 3;
+= READ 1;
+  READ 2;
+  LOAD 1; LOAD 2; GT;
+  JMC 1.3.1;
+  LOAD 1; STORE 3;
+  JMP 1.3.3;
+  1.3.1: LOAD 2; STORE 3; 
+  1.3.3: WRITE 3;
+
+** Lösung zu Aufgabe 3b
+ 1: READ 1;
+ 2: READ 2;
+ 3: LOAD 1;
+ 4: LOAD 2;
+ 5: GT;
+ 6: JMC 10;
+ 7: LOAD 1;
+ 8: STORE 3;
+ 9: JMP 12;
+10: LOAD 2;
+11: STORE 3;
+12: WRITE 3;
+
+Startkonfiguration:
+| BZ | DK | HS | Inp | Out |         |
+|----+----+----+-----+-----+---------|
+|  1 | ε  | [] | 5:7 | ε   | READ 1; |
