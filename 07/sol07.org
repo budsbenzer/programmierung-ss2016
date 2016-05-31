@@ -1,3 +1,7 @@
+#+TITLE:       Übung 7
+#+AUTHOR:      Tobias Denkinger
+#+DATE:        <2016-05-30 Mon>
+
 * Übung 7 (2016-05-30)
 ** Lösung zu Aufgabe 1a
 (λzx. z x (λy. yx)) (λy. zx) (λz. z)
