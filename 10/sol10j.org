@@ -1,0 +1,69 @@
+#+TITLE:       Übung 10
+#+AUTHOR:      Tobias Denkinger
+#+DATE:        <2016-06-20 Mon>
+
+* Übung 10 (2016-06-20)
+Teilnehmer: 29
+
+** Aufgabe 1a
+
+| It.  | x      |
+|------+--------|
+| 0    | a      |
+| 1    | a-3    |
+| 2    | a-6    |
+| 3    | a-9    |
+| ...  | ...    |
+| m    | a - 3m |
+| ...  | ...    |
+| a//3 | a%3    |
+
+ - // ganzzahlige division
+ - % modulo division
+
+SI = (a % 3 = x % 3) ∧ (x ≥ 0)
+
+** Aufgabe 2b
+A = SI
+B = SI ∧ ¬(x > 2) = SI ∧ (x ≤ 2)
+C = SI ∧ (x > 2)
+D = SI
+E = (a % 3 = (x-3) % 3) ∧ (x-3 ≥ 0)
+
+** Aufgabe 2
+R = (a ≤ a) ∧ (b ≤ b) ∧ (a < b)
+S = (a ≤ a) ∧ (b ≤ b) ∧ (a ≥ b)
+Q = (min ≤ a) ∧ (min ≤ b)
+Q1 = (min ≤ a) ∧ (b ≤ b) ∧ (min < b)
+Q2 = (a ≤ a) ∧ (min ≤ b) ∧ ¬(a < min)
+
+** Aufgabe 3a
+tab = [x/(var, global, 1), h/(proc, 1), g/(proc, 2), f/(proc, 3), main/(proc, 4)
+      , a/(var, lokal, -3), b/(var-ref, -2), c/(var, lokal, 1)]
+
+3.1: LOAD(global, 1); LIT 1; GT; JMC 3.1.1;
+3.1.2: LOAD(lokal, -2); PUSH; CALL 2; JMP 3.1.3;
+3.1.1: LOAD(lokal, -3); PUSH; LOADA(global, 1); PUSH; CALL 1;
+3.1.3, 3.2: LOADI(-2); LIT 1; ADD; STORE(lokal, 1); 
+
+** Aufgabe 3b
+
+|  BZ |  DK | LK                  | REF | Inp | Out |                  |
+| <r> | <r> | <l>                 | <r> | <r> | <l> |                  |
+|-----+-----+---------------------+-----+-----+-----+------------------|
+|  12 |   ε | 0:3:0:7             |   3 |   5 | ε   | READ(global,1);  |
+|  13 |     | 5:3:0:7             |     |   ε |     | LOAD(lokal,1);   |
+|  14 |   7 |                     |     |     |     | PUSH;            |
+|  15 |   ε | 5:3:0:7:7           |     |     |     | LOADA(global,1); |
+|  16 |   1 |                     |     |     |     | PUSH;            |
+|  17 |   ε | 5:3:0:7:7:1         |     |     |     | CALL 4;          |
+|   4 |     | 5:3:0:7:7:1:18:3    |   8 |     |     | INIT 1;          |
+|   5 |     | 5:3:0:7:7:1:18:3:0  |     |     |     | LOAD(lokal,-3);  |
+|   6 |   7 |                     |     |     |     | LOADI(-2);       |
+|   7 | 5:7 |                     |     |     |     | ADD;             |
+|   8 |  12 |                     |     |     |     | STORE(global,1); |
+|   9 |   ε | 12:3:0:7:7:1:18:3:0 |     |     |     | RET 2;           |
+|  18 |     | 12:3:0:7            |   3 |     |     | WRITE(global,1); |
+|  19 |     |                     |     |     | 12  | RET 0;           |
+|   3 |     | 12                  |   0 |     |     | JMP 0;           |
+|   0 |     |                     |     |     |     |                  |
