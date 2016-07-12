@@ -1,0 +1,353 @@
+\documentclass[11pt, twoside, BCOR=16mm, a4paper, DIV=15, numbers=noenddot]{scrartcl}
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+
+% Mathematical Symbols/Miscellaneous Mathematical Symbols-A
+%
+\DeclareUnicodeCharacter{27E8}{\langle}%           ⟨  MATHEMATICAL LEFT ANGLE BRACKET
+\DeclareUnicodeCharacter{27E9}{\rangle}%           ⟩  MATHEMATICAL RIGHT ANGLE BRACKET
+
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{rail}
+\usepackage{listings}
+\usepackage{tabularx}
+\usepackage{multicol}
+
+\usepackage[ngerman]{babel}
+\usepackage{lastpage}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows,trees,shapes.misc}
+
+\tikzset{ level distance=2em, sibling distance=4em}
+
+\usepackage{enumitem}
+\newlist{teilaufg}{enumerate}{1}
+\setlist{nosep}
+\setlist[teilaufg]{label=(\alph*)}
+
+\usepackage[T1]{fontenc}
+\usepackage[bitstream-charter,cal=cmcal]{mathdesign}
+\setkomafont{sectioning}{\normalcolor\bfseries}
+\usepackage[scaled]{beramono}
+
+\usepackage[thmmarks,amsmath]{ntheorem}
+\theoremstyle{break}
+\theorembodyfont{\upshape}
+\theoremheaderfont{\bfseries}
+\newtheorem{ex}{Übung}
+\newtheorem{zu}{Zusatzaufgabe}
+
+\renewcommand{\paragraph}[1]{\vspace{0.3cm}\noindent{\bf #1}}
+
+\newcommand{\Nat}{\mathbb{N}}
+
+\newcommand{\lam}[1]{\ensuremath{\langle #1 \rangle}}
+\newcommand{\ite}{\lam{\mathrm{ite}}}
+\newcommand{\iszero}{\lam{\mathrm{iszero}}}
+\renewcommand{\succ}{\lam{\mathrm{succ}}}
+\renewcommand{\mod}{\lam{\mathrm{mod}}}
+\newcommand{\pred}{\lam{\mathrm{pred}}}
+\newcommand{\true}{\lam{\mathrm{true}}}
+\newcommand{\false}{\lam{\mathrm{false}}}
+\newcommand{\add}{\lam{\mathrm{add}}}
+\newcommand{\mult}{\lam{\mathrm{mult}}}
+\newcommand{\sub}{\lam{\mathrm{sub}}}
+\renewcommand{\epsilon}{\varepsilon}
+
+\newcommand{\eor}{\mathop{|}}
+
+\usepackage[footsepline,plainfootsepline]{scrpage2}
+\clearscrheadfoot
+\renewcommand{\headfont}{\normalfont}
+\ofoot[\vspace*{-1mm}\pagemark\slash{}\pageref{LastPage}]{\vspace*{-1mm}\pagemark\slash{}\pageref{LastPage}}
+\pagestyle{scrplain}
+
+\newcommand\starred{\ensuremath{\star}}
+
+\setlength{\theorempreskipamount}{10pt}
+\setlength{\theorempostskipamount}{15pt}
+
+
+\lstdefinelanguage{Haskell2010}%
+{ sensitive%
+  , morecomment=[l]--%
+  , morecomment=[n]{\{-}{-\}}%
+  , morestring=[b]"%
+  % , morestring=[b]'% this would collide with identifiers containing '
+  , alsodigit={'.}%
+  , alsoother={@\$}%
+  % http://www.haskell.org/onlinereport/haskell2010/haskellch2.html#x7-180002.4
+  , morekeywords={case, class, data, default, deriving, do, else, foreign, if, import, in, infix, infixl, infixr, instance, let, module, newtype, of, then, type, where}%
+}
+
+\tikzset{% für den Hoare-Kalkül
+  HoareNode/.style={draw, inner sep=5pt,rounded corners=8pt},
+  HoareKante/.style={above left,inner sep=1.5pt},
+  HoareTree/.style={%
+    grow'=up,%
+    line width=1pt,%
+    every child node/.style={HoareNode},
+    sibling distance=1cm, level distance=2cm,%
+    edge from parent/.style={draw,latex'-},edge from parent path={(\tikzparentnode) -- (\tikzchildnode)}%
+  },
+  HoareImpl/.style={rounded corners=0pt},
+}
+
+\lstdefinestyle{oholzer}
+{ basicstyle=\ttfamily
+  , identifierstyle=
+  , stringstyle=
+  , keywordstyle=\bfseries
+  , captionpos=b
+  , columns=fullflexible
+  , keepspaces=true
+  , sensitive=true
+  , showstringspaces=false
+  , numbers=none
+  , firstnumber=auto  % \thelstnumber
+  , numberblanklines=true
+  , showlines=false  % print empty lines at the end of listings
+  , showspaces=false
+  , showtabs=false
+  %	, numbersep=1.1em
+  %	, framerule=0.5pt
+  %	, rulesep=-2.4em
+  , tabsize=2
+  , xleftmargin=3\parindent
+  , language=Haskell2010}
+
+\lstset{style=oholzer}
+
+
+\makeatletter
+\def\hrulefill{\leavevmode\leaders \hrule height \rulethickness \hfill\kern\z@}
+\makeatletter
+
+\begin{document}
+
+\vspace*{-5mm}\hspace*{-4mm}\includegraphics[height = 8mm]{TU_Logo_SW}
+\quad
+\begin{minipage}[b]{12.3cm}
+  % \begin{tabular}{p\textwidth}
+  \hrulefill\\
+  \scriptsize
+  % \vspace*{-2mm}
+  {\scriptsize{Fakult\"at Informatik} {$\bullet$}
+    Institut f\"ur Theoretische Informatik {$\bullet$}
+    Lehrstuhl Grundlagen der Programmierung }
+  Prof. Dr. H.\,Vogler / Dipl.-Inf. J.\,Osterholzer \hfill\url{http://www.orchid.inf.tu-dresden.de}\\[-2.1mm]
+  \mbox{}\hrulefill
+  % \end{tabular}
+\end{minipage}
+
+\begin{center}
+  \huge Programmierung\\
+  \Large Lösungen zum 13. Übungsblatt\\[1mm]
+  \small Zeitraum: 11. -- 15. Juli 2016\\[3mm]
+\end{center}
+
+\begin{ex}
+  \textbf{Induktionsanfang }(IA) mit \texttt{r = []}:
+Sei \texttt{x :: Int}. Dann gilt:
+\begin{align*}
+  \texttt{sumTree (toTree [] x)}&\stackrel{12}{=}\texttt{sumTree (Leaf x)}\\
+  &\stackrel{4}{=}\texttt{x}\\
+  &=\texttt{x * 1}\\
+  &\stackrel{8}{=}\texttt{x * prod []}\\
+\end{align*}
+
+\noindent\textbf{Induktionsvoraussetzung }(IV):
+Sei \texttt{r :: [Int]} beliebig aber fest so dass
+\begin{center}
+  \texttt{sumTree (toTree r x) = x * prod r}\;
+\end{center}
+für jedes \texttt{x :: Int}.
+ 
+\noindent\textbf{Induktionsschritt }(IS):
+Sei \texttt{a :: Int} beliebig.
+\begin{align*}
+  \texttt{sumTree(toTree (a : r) x) }&\stackrel{13}{=}\texttt{sumTree(Node (toTree r (2 * a * x)) (toTree r (-a * x)))}\\
+  &\stackrel{5}{=}\texttt{sumTree (toTree r (2 * a * x)) + sumTree (toTree r (-a * x))}\\
+  &\stackrel{IV}{=}\texttt{2 * a * x * prod r + (-a * x) * prod r}\\
+  &=\texttt{a * x * prod r}\\
+  &=\texttt{x * (a * prod r)}\\
+  &\stackrel{9}{=}\texttt{x * prod (a : r)}\\
+\end{align*}
+
+\end{ex}
+
+\begin{ex}
+  \begin{teilaufg}
+  \item~
+      
+    $(y (\lambda x.y) x) ((\lambda x\underbrace{y.x (\lambda z.z) y}_{GV=\{y,z\}}) \underbrace{(\lambda x.y)}_{FV=\{y\}})$ \\
+    $\Rightarrow_\alpha (y (\lambda x.y) x) ((\lambda x\underbrace{y_1.x (\lambda z.z) y_1}_{GV=\{y_1,z\}}) \underbrace{(\lambda x.y)}_{FV=\{y\}})$ \\
+    $\Rightarrow_\beta (y (\lambda x.y) x) (\lambda y_1.(\lambda x.\underbrace{y}_{GV=\emptyset}) \underbrace{(\lambda z.z)}_{FV=\emptyset} y_1)$ \\
+    $\Rightarrow_\beta (y (\lambda x.y) x) (\lambda y_1.y y_1)$
+%
+    \item~
+    \begin{align*}
+    ⟨G⟩ = & (\lambda fxy. ⟨\mathit{ite}⟩ (⟨\mathit{iszero}⟩ x) \; y \\
+    & \quad (⟨\mathit{ite}⟩ (⟨\mathit{iszero}⟩ (⟨\mathit{mod}⟩ x ⟨2⟩)) \\
+    & \qquad (⟨\mathit{add}⟩ ⟨3⟩ (f (⟨\mathit{pred}⟩ x) (⟨\mathit{succ}⟩ (⟨\mathit{succ}⟩ y)))) \\
+    & \qquad (⟨\mathit{mult}⟩ ⟨2⟩ (f (⟨\mathit{pred}⟩ x) (⟨\mathit{succ}⟩ y)))))
+    \end{align*}
+%
+    \item~
+  
+      Nebenrechnung: $⟨Y⟩⟨F⟩ = (\lambda h. \; (\lambda y.h\;(yy))\; (\lambda y.h\; (yy))) ⟨F⟩ \\
+    \Rightarrow_\beta \underbrace{(\lambda y.⟨F⟩(yy))\; (\lambda y.⟨F⟩(yy))}_{=⟨Y_F⟩}
+    \Rightarrow_\beta \; ⟨F⟩ ⟨Y_F⟩$\\[\baselineskip]
+%
+    $⟨Y⟩⟨F⟩⟨1⟩⟨5⟩\\
+    \\
+    \Rightarrow^{*} \; ⟨F⟩ ⟨Y_F⟩ ⟨1⟩⟨5⟩\\
+    \Rightarrow^{*} \; ⟨\mathit{ite}⟩ (\underbrace{⟨\mathit{iszero}⟩ ⟨1⟩}_{\Rightarrow^{*} \; ⟨\mathit{false}⟩}) (⟨\mathit{succ}⟩ (⟨\mathit{succ}⟩ ⟨5⟩))\\
+    \mbox{}\qquad\qquad (⟨\mathit{add}⟩ ⟨5⟩ ( \underbrace{⟨Y_F⟩}_{\Rightarrow^{*} \; ⟨F⟩ ⟨Y_F⟩} (\underbrace{⟨\mathit{pred}⟩ ⟨1⟩}_{\Rightarrow^{*} \; ⟨0⟩}) (\underbrace{⟨\mathit{succ}⟩ ⟨1⟩}_{\Rightarrow^{*} \; ⟨2⟩})\\[\baselineskip]
+%
+    \Rightarrow^{*} \; ⟨\mathit{add}⟩ ⟨5⟩ (⟨F⟩ ⟨Y_F⟩ ⟨0⟩ ⟨2⟩)\\
+    \Rightarrow^{*} \; ⟨\mathit{add}⟩ ⟨5⟩ (⟨\mathit{ite}⟩ (\underbrace{⟨\mathit{iszero}⟩ ⟨0⟩}_{\Rightarrow^{*} \; ⟨\mathit{true}⟩}) (\underbrace{⟨\mathit{succ}⟩ (\underbrace{⟨\mathit{succ}⟩ ⟨2⟩}_{\Rightarrow^{*} \; ⟨3⟩})}_{\Rightarrow^{*} \; ⟨4⟩}) \\
+    \mbox{}\qquad\qquad(⟨\mathit{add}⟩ ⟨2⟩ (⟨Y_F⟩ (⟨\mathit{pred}⟩ ⟨0⟩) (⟨\mathit{succ}⟩ ⟨2⟩))))\\[\baselineskip]
+%
+    \Rightarrow^{*} \; ⟨\mathit{add}⟩ ⟨5⟩ ⟨4⟩\\[\baselineskip]
+%
+    \Rightarrow^{*} \; ⟨9⟩$
+\end{teilaufg}
+\end{ex}
+
+\begin{ex}
+  \begin{teilaufg}
+\item
+\setlength\abovedisplayskip{-\baselineskip}
+\begin{align*}
+	\mathit{tab}_{g + \mathit{lDecl}} = [
+&
+	f / (\textnormal{proc}, 1),
+	g / (\textnormal{proc}, 2),
+	x / (\textnormal{var}, \textnormal{global}, 1),
+	y / (\textnormal{var}, \textnormal{global}, 2),
+\\&
+	b / (\textnormal{var-ref}, -2),
+	a / (\textnormal{var}, \textnormal{lokal}, 1) ]
+\end{align*}
+AM$_1$-Code:
+\begin{lstlisting}[numbers=none]
+2.1.1:  LOAD (global,1); LIT 0; GT;
+        JMC 2.1.2;
+        LOAD (global,1); LOAD (lokal,1); SUB; STORE (global,1);
+        LOAD (global,2); PUSH;
+        LOADA (lokal,1); PUSH;
+        CALL 1;
+        JMP 2.1.1;
+2.1.2:  LOAD(lokal,-2); PUSH; CALL 2; 
+\end{lstlisting}
+
+\item
+\begin{tabular}[t]{c|r|l|c|c|c}
+BZ& DK&LK&REF&Inp&Out \\ \hline \hline
+$13$&$\varepsilon$&$0:3:0:9:7$&$3$&$\varepsilon$&$\varepsilon$\\ \hline
+$14$&$7$&$0:3:0:9:7$&$3$&$\varepsilon$&$\varepsilon$\\ \hline
+$15$&$\varepsilon$&$0:3:0:9:7:7$&$3$&$\varepsilon$&$\varepsilon$\\ \hline
+$16$&$4$&$0:3:0:9:7:7$&$3$&$\varepsilon$&$\varepsilon$\\ \hline
+$17$&$\varepsilon$&$0:3:0:9:7:7:4$&$3$&$\varepsilon$&$\varepsilon$\\ \hline
+$4$&$\varepsilon$&$0:3:0:9:7:7:4:18:3$&$9$&$\varepsilon$&$\varepsilon$\\ \hline
+$5$&$\varepsilon$&$0:3:0:9:7:7:4:18:3$&$9$&$\varepsilon$&$\varepsilon$\\ \hline
+$6$&$9$&$0:3:0:9:7:7:4:18:3$&$9$&$\varepsilon$&$\varepsilon$\\ \hline
+$7$&$7:9$&$0:3:0:9:7:7:4:18:3$&$9$&$\varepsilon$&$\varepsilon$\\ \hline
+$8$&$16$&$0:3:0:9:7:7:4:18:3$&$9$&$\varepsilon$&$\varepsilon$\\ \hline
+$9$&$\varepsilon$&$16:3:0:9:7:7:4:18:3$&$9$&$\varepsilon$&$\varepsilon$\\ \hline
+$18$&$\varepsilon$&$16:3:0:9:7$&$3$&$\varepsilon$&$\varepsilon$\\ \hline
+$19$&$\varepsilon$&$16:3:0:9:7$&$3$&$\varepsilon$&$16$\\ \hline
+$3$&$\varepsilon$&$16$&$0$&$\varepsilon$&$16$\\ \hline
+$0$&$\varepsilon$&$16$&$0$&$\varepsilon$&$16$\\ \hline
+\end{tabular}
+\end{teilaufg}
+\end{ex}
+
+\begin{ex}
+  \begin{teilaufg}
+\item $SI = (z=(x-x1)\cdot 3y)\wedge(x1\geq0)$
+%
+\item 
+\begin{tabular}[t]{@{}l}
+$A=C=SI$\\
+$B=SI\wedge\neg\pi=(z=(x-x1)\cdot 3y)\wedge(x1\geq0)\wedge(x1\leq0)$\\
+$D=SI\wedge\pi=(z=(x-x1)\cdot 3y)\wedge(x1\geq0)\wedge(x1>0)$
+\end{tabular}
+\end{teilaufg}
+\end{ex}
+
+
+\begin{zu}
+  ~
+  \begin{lstlisting}[language=Haskell2010]
+-- (a)
+expo :: Int -> Int -> Int
+expo 0 0 = error "0^0 ist nicht definiert!"
+expo x 1 = x
+expo _ 0 = 1
+expo x n = x * expo x (n - 1)
+
+-- (b)
+data Tree a = Branch (Tree a) (Tree a) | Leaf a deriving Show
+
+check :: Tree a -> Int -> Bool
+check (Leaf _)     k = k == 0
+check (Branch l r) k = check l (k - 1) || check r (k - 1)
+
+-- (c)
+test :: [Int] -> Bool
+test []       = True
+test (z : zs) = notElem z zs && test zs
+  where
+    notElem :: Int -> [Int] -> Bool
+    notElem _ []       = True
+    notElem x (y : ys) = x /= y && notElem x ys
+\end{lstlisting}
+\emph{Hinweis:} Die Funktion \lstinline!notElem! ist normalerweise im Modul \lstinline!Prelude! bereits mit folgendem Typ vordefiniert: \lstinline!notElem :: Eq a => a -> [a] -> Bool!.
+
+\end{zu}
+
+% Unifikation
+\newcommand{\uniftuple}[2]{\begin{pmatrix}#1\\ #2\end{pmatrix}}
+\newcommand*{\unifArr}[1]{\stackrel{\smash{\text{#1}}}{\Longrightarrow}}
+\newcommand*{\unifArrD}{\unifArr{Dek.}}% Dekomposition
+\newcommand*{\unifArrE}{\unifArr{El.}}% Elimination
+\newcommand*{\unifArrP}{\unifArr{Vert.}}% Vertauschung (Permutation)
+\newcommand*{\unifArrS}{\unifArr{Sub.}}% Substitution
+
+
+\begin{zu}
+  \begin{teilaufg}
+\item\mbox{}\vspace{-2em}
+	\begin{align*}
+		& \left\{\uniftuple{\underline{\sigma}(\tau( x_4, x_2 ),\sigma(\gamma( x_1 ), x_1 ))}{\underline{\sigma}(x_1,\sigma( x_3 , \tau(\alpha, x_2 )))}\right\}
+	\\
+		\unifArrD {}& \left\{ \uniftuple{\tau( x_4, x_2 )}{ x_1}, \uniftuple{\underline{\sigma}(\gamma( x_1 ), x_1 )}{\underline{\sigma}( x_3 , \tau(\alpha, x_2))} \right\}
+	\\
+		\unifArrD {}& \left\{ \uniftuple{\tau( x_4, x_2 )}{ \underline{x_1}}, \uniftuple{\gamma( \underline{x_1})}{x_3 }, \underline{\uniftuple{x_1}{\tau(\alpha, x_2)} } \right\}
+	\\
+		\unifArrS {}& \left\{ \uniftuple{\underline{\tau}( x_4, x_2 )}{\underline{\tau}(\alpha, x_2)}, \uniftuple{\gamma( \tau(\alpha, x_2))}{x_3 }, \uniftuple{x_1}{\tau(\alpha, x_2)}\right\}
+	\\
+		\unifArrD {}& \left\{ \uniftuple{x_4}{ \alpha}, \underline{\uniftuple{x_2}{ x_2}}, \uniftuple{\gamma( \tau(\alpha, x_2))}{x_3 }, \uniftuple{x_1}{\tau(\alpha, x_2)}\right\}
+	\\
+		\unifArrE {}& \left\{ \uniftuple{x_4}{ \alpha}, \underline{\uniftuple{\gamma( \tau(\alpha, x_2))}{x_3 }}, \uniftuple{x_1}{\tau(\alpha, x_2)}\right\}
+	\\
+		\unifArrP {}& \left\{ \uniftuple{x_4}{ \alpha}, \uniftuple{x3}{ \gamma( \tau(\alpha, x_2)) }, \uniftuple{x_1}{\tau(\alpha, x_2)}\right\}
+	\end{align*}
+	allgemeinster Unifikator: $x_1\mapsto\tau(\alpha, x_2),\ x_2\mapsto x_2,\ x_3\mapsto \gamma( \tau(\alpha, x_2)),\ x_4\mapsto \alpha$
+\item
+	\(t_1 = \gamma(x_1)\), \(t_2 = \gamma(\gamma(x_1))\)
+\end{teilaufg}
+\end{zu}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
